@@ -3,10 +3,9 @@ package de.b4.tagger.ui;
 import de.b4.tagger.ui.actions.Action;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToolBar;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.util.Map;
 
@@ -15,7 +14,8 @@ public class MainWindow {
         return new VBox(
                 MainMenu.create(),
                 createToolbar(),
-                createMainView());
+                createMainView(),
+                createStatusbar());
     }
 
     private static ToolBar createToolbar() {
@@ -32,10 +32,22 @@ public class MainWindow {
         );
     }
 
-    private static Pane createMainView() {
+    private static SplitPane createMainView() {
         String javaVersion = System.getProperty("java.version");
         String javafxVersion = System.getProperty("javafx.version");
         Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        return new StackPane(l);
+
+        SplitPane mainArea = new SplitPane();
+        mainArea.getItems().addAll(DirectoryTree.create(), new VBox(l));
+        VBox.setVgrow(mainArea, Priority.ALWAYS);
+        mainArea.setDividerPosition(0, 0.33);
+
+        return mainArea;
+    }
+
+    private static Pane createStatusbar() {
+        HBox statusBar = new HBox();
+        statusBar.getChildren().addAll(new Label(I18n.getMessage("status.ready.text")));
+        return statusBar;
     }
 }
