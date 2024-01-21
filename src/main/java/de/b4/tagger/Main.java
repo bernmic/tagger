@@ -2,14 +2,17 @@ package de.b4.tagger;
 
 import de.b4.tagger.ui.MainWindow;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    private static boolean initialization = true;
+
     private static Configuration configuration;
-    StackPane root;
+    private static StackPane root;
 
     @Override
     public void init() {
@@ -34,7 +37,27 @@ public class Main extends Application {
         Scene mainWindow = new Scene(root, configuration.getWidth(), configuration.getHeight());
         stage.setScene(mainWindow);
         stage.setTitle(Constants.APP_NAME);
+
+        stage.setOnShowing(e -> {
+            MainWindow.directoryTree.expandToPath(Main.getConfiguration().getCurrentPath());
+        });
+
+        initialization = false;
         stage.show();
+    }
+
+    public static void showOverlay(Node node) {
+        if (initialization)
+            return;
+        root.getChildren().get(0).setDisable(true);
+        root.getChildren().add(node);
+    }
+
+    public static void hideOverlay(Node node) {
+        if (initialization)
+            return;
+        root.getChildren().remove(node);
+        root.getChildren().get(0).setDisable(false);
     }
 
     public static Configuration getConfiguration() {

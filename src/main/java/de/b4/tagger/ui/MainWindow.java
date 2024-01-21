@@ -10,6 +10,9 @@ import javafx.scene.layout.*;
 import java.util.Map;
 
 public class MainWindow {
+    public static DirectoryTree directoryTree;
+    public static DataTable dataTable;
+
     public static Pane create() {
         return new VBox(
                 MainMenu.create(),
@@ -33,12 +36,11 @@ public class MainWindow {
     }
 
     private static SplitPane createMainView() {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-
         SplitPane mainArea = new SplitPane();
-        mainArea.getItems().addAll(DirectoryTree.create(), new VBox(l));
+        directoryTree = DirectoryTree.create();
+        dataTable = DataTable.create();
+        dataTable.connectTree(directoryTree);
+        mainArea.getItems().addAll(directoryTree, dataTable);
         VBox.setVgrow(mainArea, Priority.ALWAYS);
         mainArea.setDividerPosition(0, 0.33);
 
