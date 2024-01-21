@@ -1,5 +1,5 @@
 target
-*.properties
+tagger.properties
 .idea
 .settings
 bin
@@ -9,4 +9,3 @@ gradle
 .project
 .vscode
 .classpath
-.p

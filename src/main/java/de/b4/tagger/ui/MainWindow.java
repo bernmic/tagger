@@ -12,14 +12,10 @@ import java.util.Map;
 
 public class MainWindow {
     public static Pane create() {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        StackPane mainPanel = new StackPane(l);
         return new VBox(
                 MainMenu.create(),
                 createToolbar(),
-                mainPanel);
+                createMainView());
     }
 
     private static ToolBar createToolbar() {
@@ -34,5 +30,12 @@ public class MainWindow {
                 handler.get(MainMenu.CUT).getToolbarButton(),
                 handler.get(MainMenu.PASTE).getToolbarButton()
         );
+    }
+
+    private static Pane createMainView() {
+        String javaVersion = System.getProperty("java.version");
+        String javafxVersion = System.getProperty("javafx.version");
+        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
+        return new StackPane(l);
     }
 }
